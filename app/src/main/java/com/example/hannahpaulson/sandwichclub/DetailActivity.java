@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.hannahpaulson.sandwichclub.Utils.JsonUtils;
+import com.example.hannahpaulson.sandwichclub.model.Sandwich;
 import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
