@@ -3,6 +3,7 @@ package com.example.hannahpaulson.sandwichclub;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -60,20 +61,27 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        String[] sandwiches = getResources().getStringArray(R.array.sandwich_details);
-        String json = sandwiches[position];
-        Sandwich sandwich = null;
-        try {
-            sandwich = JsonUtils.parseSandwichJson(json);
-            populateUI(sandwich);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Sandwich sandwich = getSandwichData(position);
+
         if (sandwich == null) {
             // Sandwich data unavailable
             closeOnError();
             return;
         }
+        populateUI(sandwich);
+    }
+
+    @Nullable
+    private Sandwich getSandwichData(int position) {
+        String[] sandwiches = getResources().getStringArray(R.array.sandwich_details);
+        String json = sandwiches[position];
+        Sandwich sandwich = null;
+        try {
+            sandwich = JsonUtils.parseSandwichJson(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sandwich;
     }
 
     private void closeOnError() {
@@ -94,8 +102,8 @@ public class DetailActivity extends AppCompatActivity {
         addItemsToTextView(ingredientsTv, sandwich.getIngredients(), ingredientsTvLabel);
     }
 
-    private void setVisibilityForViews(TextView textView, TextView label, String text) {
-        label.setVisibility(text.isEmpty() ? View.GONE : View.VISIBLE);
+    private void setVisibilityForViews(TextView textView, TextView labelView, String text) {
+        labelView.setVisibility(text.isEmpty() ? View.GONE : View.VISIBLE);
         textView.setVisibility(text.isEmpty() ? View.GONE : View.VISIBLE);
         textView.setText(text);
     }
